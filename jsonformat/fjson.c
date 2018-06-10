@@ -4,7 +4,7 @@ int main(int argc, char const *argv[]) {
   int depth = 0;
   int c;
   char state = 0;
-
+  int ok=1;
   while ((c = fgetc(stdin)) != EOF) {
     if (c == '\"') {
       if (state == 0) {
@@ -14,7 +14,14 @@ int main(int argc, char const *argv[]) {
       }
 
       fputc(c, stdout);
-    } else if (c == '{' || c == '[') {
+    } else if (c == '{') {
+      fputc(c, stdout);
+      fputc('\n', stdout);
+      depth++;
+      for (int i = 0; i < depth; i++) {
+        fputc('\t', stdout);
+      }
+    } else if (c == '[') {
       fputc(c, stdout);
       fputc('\n', stdout);
       depth++;
@@ -33,7 +40,7 @@ int main(int argc, char const *argv[]) {
       fputc(' ', stdout);
     } else if (state == 1) {
       fputc(c, stdout);
-    } else if (state == ',') {
+    } else if (c == ',') {
       fputc(c, stdout);
       fputc('\n', stdout);
       for (int i = 0; i < depth; i++) {
