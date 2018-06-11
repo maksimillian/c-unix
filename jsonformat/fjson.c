@@ -65,15 +65,19 @@ int true(FILE *in, FILE *out) {
 
 int text(FILE *in, FILE *out) {
   int c = fgetc(in);
+  int slash = (c == '\\');
+
   fputc(c, out);
-  int slash = 0;
-  while (!(c == '\"' && !slash)) {
-    c = fgetc(in);
-    if (c == '\\')
-      slash = !slash;
+  for (c = fgetc(in); c != '"' || slash; c = fgetc(in)) {
     fputc(c, out);
-    // fputc('.',out);
+
+    if (slash)
+      slash = 0;
+    else
+      slash = (c == '\\');
   }
+  fputc(c, out);
+
   return 1;
 }
 
@@ -85,7 +89,8 @@ int main(int argc, char const *argv[]) {
   while (ok && !feof(stdin)) {
     c = fgetc(stdin);
 
-    if (c == '\"') {
+    if (c == '"') {
+      // ungetc(c, stdin);
       fputc(c, stdout);
       ok = text(stdin, stdout);
     } else if (c == 'n') {
@@ -112,12 +117,12 @@ int main(int argc, char const *argv[]) {
         fputc('\t', stdout);
       }
     } else if (c == '}' || c == ']') {
-      fputc(c, stdout);
-      fputc('\n', stdout);
       depth--;
+      fputc('\n', stdout);
       for (int i = 0; i < depth; i++) {
         fputc('\t', stdout);
       }
+      fputc(c, stdout);
     } else if (c == ':') {
       fputc(c, stdout);
       fputc(' ', stdout);
@@ -128,18 +133,7 @@ int main(int argc, char const *argv[]) {
         fputc('\t', stdout);
       }
     }
-
-    /*if (c == '{') {
-      depth++;
-      fputc(c, stdout);
-    } else if (c == '}') {
-      depth--;
-      fputc(c, stdout);
-    } else if (c == '\n') {
-      fputc(c, stdout);
-      for (int i = 0; i < depth; i++) {
-        fputc('\t', stdout);
-      }
-    }*/
   }
+  fputc('\n', stdout);
+  fflush(stdin);
 }
