@@ -11,7 +11,10 @@ int main(int argc, char const *argv[]) {
   fclose(tmpF);
   tmpF = fopen("tmpF", "r");
   fseek(tmpF, -2L, SEEK_END);
-  c = fgetc(tmpF);
-  fputc(c, stdout);
+  while (ftell(tmpF) > 0) {
+    fseek(tmpF, -2L, SEEK_CUR);
+    c = fgetc(tmpF);
+    fputc(c, stdout);
+  }
   fclose(tmpF);
 }
