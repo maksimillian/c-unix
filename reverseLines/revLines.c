@@ -12,9 +12,13 @@ int main(int argc, char const *argv[]) {
   tmpF = fopen("tmpF", "r");
   fseek(tmpF, -2L, SEEK_END);
   while (ftell(tmpF) > 0) {
-    fseek(tmpF, -2L, SEEK_CUR);
     c = fgetc(tmpF);
+    fseek(tmpF, -2L, SEEK_CUR);
     fputc(c, stdout);
   }
+  fseek(tmpF, 0, SEEK_SET);
+  c = fgetc(tmpF);
+  fputc(c, stdout);
+  fputc('\n', stdout);
   fclose(tmpF);
 }
