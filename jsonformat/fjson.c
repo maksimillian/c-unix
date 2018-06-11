@@ -1,76 +1,79 @@
 #include <stdio.h>
-int null (FILE *in, FILE *out){
+int null(FILE *in, FILE *out) {
   int c = fgetc(in);
-  if(c != 'n')
+  if (c != 'n')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'u')
+  if (c != 'u')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'l')
+  if (c != 'l')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'l')
+  if (c != 'l')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   return 1;
 }
 
-int false (FILE *in, FILE *out){
+int false(FILE *in, FILE *out) {
   int c = fgetc(in);
-  if(c != 'f')
+  if (c != 'f')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'a')
+  if (c != 'a')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'l')
+  if (c != 'l')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 's')
+  if (c != 's')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'e')
+  if (c != 'e')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   return 1;
 }
 
-int true (FILE *in, FILE *out){
+int true(FILE *in, FILE *out) {
   int c = fgetc(in);
-  if(c != 't')
+  if (c != 't')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'r')
+  if (c != 'r')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'u')
+  if (c != 'u')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   c = fgetc(in);
-  if(c != 'e')
+  if (c != 'e')
     return 0;
-  fputc(c,out);
+  fputc(c, out);
   return 1;
 }
 
-int apostrophe (FILE *in, FILE *out, int lc){
+int text(FILE *in, FILE *out) {
   int c = fgetc(in);
-  if(c == '\"' && lc != '\\'){
-    fputc(c,out);
-    return 0;
+  fputc(c, out);
+  int slash = 0;
+  while (!(c == '\"' && !slash)) {
+    c = fgetc(in);
+    if (c == '\\')
+      slash = !slash;
+    fputc(c, out);
+    // fputc('.',out);
   }
-  fputc(c,out);
-  //fputc('.',out);
   return 1;
 }
 
@@ -79,74 +82,64 @@ int main(int argc, char const *argv[]) {
   int c;
   char istext = 0;
   int ok = 1;
-  FILE *fp;
-  fp = fopen("output.json","w+");
   while (ok && !feof(stdin)) {
     c = fgetc(stdin);
-    if (!istext){
+
     if (c == '\"') {
-      istext = 1;
-      fputc(c, fp);
-    } else if(c == 'n'){
-      ungetc(c,stdin);
-      ok = null(stdin,fp);
-    } else if(c == 'f'){
-      ungetc(c,stdin);
-      ok = false(stdin,fp);
-    } else if(c == 't'){
-      ungetc(c,stdin);
-      ok = true(stdin,fp);
+      fputc(c, stdout);
+      ok = text(stdin, stdout);
+    } else if (c == 'n') {
+      ungetc(c, stdin);
+      ok = null(stdin, stdout);
+    } else if (c == 'f') {
+      ungetc(c, stdin);
+      ok = false(stdin, stdout);
+    } else if (c == 't') {
+      ungetc(c, stdin);
+      ok = true(stdin, stdout);
     } else if (c == '{') {
-      fputc(c, fp);
-      fputc('\n', fp);
+      fputc(c, stdout);
+      fputc('\n', stdout);
       depth++;
       for (int i = 0; i < depth; i++) {
-        fputc('\t', fp);
+        fputc('\t', stdout);
       }
     } else if (c == '[') {
-      fputc(c, fp);
-      fputc('\n', fp);
+      fputc(c, stdout);
+      fputc('\n', stdout);
       depth++;
       for (int i = 0; i < depth; i++) {
-        fputc('\t', fp);
+        fputc('\t', stdout);
       }
     } else if (c == '}' || c == ']') {
-      fputc(c, fp);
-      fputc('\n', fp);
+      fputc(c, stdout);
+      fputc('\n', stdout);
       depth--;
       for (int i = 0; i < depth; i++) {
-        fputc('\t', fp);
+        fputc('\t', stdout);
       }
     } else if (c == ':') {
-      fputc(c, fp);
-      fputc(' ', fp);
+      fputc(c, stdout);
+      fputc(' ', stdout);
     } else if (c == ',') {
-      fputc(c, fp);
-      fputc('\n', fp);
+      fputc(c, stdout);
+      fputc('\n', stdout);
       for (int i = 0; i < depth; i++) {
-        fputc('\t', fp);
+        fputc('\t', stdout);
       }
     }
-  } else {
-    /*if (c == '\\'){
-      fputc(c,fp);
-      istext = apostrophe(stdin,fp,c);
-    }*/
-    fputc(c,fp);
-    istext = apostrophe(stdin,fp,c);
-  }
+
     /*if (c == '{') {
       depth++;
-      fputc(c, fp);
+      fputc(c, stdout);
     } else if (c == '}') {
       depth--;
-      fputc(c, fp);
+      fputc(c, stdout);
     } else if (c == '\n') {
-      fputc(c, fp);
+      fputc(c, stdout);
       for (int i = 0; i < depth; i++) {
-        fputc('\t', fp);
+        fputc('\t', stdout);
       }
     }*/
   }
-  fclose(fp);
 }
