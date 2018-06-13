@@ -104,11 +104,11 @@ int main(int argc, char const *argv[]) {
       ok = true(stdin, stdout);
     } else if (c == '{') {
       fputc(c, stdout);
-      fputc('\n', stdout);
+      // fputc('\n', stdout);
       depth++;
-      for (int i = 0; i < depth; i++) {
+      /*for (int i = 0; i < depth; i++) {
         fputc('\t', stdout);
-      }
+      }*/
     } else if (c == '[') {
       fputc(c, stdout);
       fputc('\n', stdout);
