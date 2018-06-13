@@ -41,6 +41,7 @@ void initCup() {
 
 void printCup() {
   char s = '\n';
+  system("clear");
   for (int y = 0; y < c_heigth; y++) {
     for (int x = 0; x < c_width; x++) {
       if (cup.f[x][y] == 1)
@@ -70,15 +71,16 @@ int main(int argc, char const *argv[]) {
   initCup();
   printCup();
   // fcntl(1, O_NONBLOCK);
-  /*while (1) {
-    usleep(10000);
+  while (1) {
+    usleep(100000);
     if (read(0, &c, 1) != -1) {
 
-      write(1, &c, 1);
+      //write(1, &c, 1);
     } else {
       s = "\033[38;5;206m\u25A3 ";
-      write(1, s, 14);
+      //write(1, s, 14);
+      printCup();
     }
-  }*/
+  }
   return 0;
 }
