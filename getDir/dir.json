@@ -1,1 +1,1 @@
-{"/home/student/src/getDir":["Makefile","dir.json","getdir",{"2":["2.txt"]},{"1":["1.txt"]},"getdir.c"]}
+{"/home/student/src/getDir":[{"name":"Makefile","size":"126","size on disk":"4096","slag":"3970"},{"name":"dir.json","size":"0","size on disk":"0","slag":"0"},{"name":"getdir","size":"17512","size on disk":"20480","slag":"2968"},{"2":[{"name":"2.txt","size":"0","size on disk":"0","slag":"0"}]},{"1":[{"name":"1.txt","size":"0","size on disk":"0","slag":"0"}]},{"name":"getdir.c","size":"1870","size on disk":"4096","slag":"2226"}]}

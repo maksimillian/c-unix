@@ -6,7 +6,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/syscall.h>
+#include <sys/sysmacros.h>
+#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
+
 #define BUF_SIZE 1024
 
 struct linux_dirent {
@@ -20,6 +24,7 @@ FILE *fp;
 int level = 0;
 void readDir(int fd) {
   struct linux_dirent *d;
+  struct stat s;
   int nread, bpos;
   char buf[BUF_SIZE];
   char d_type;
@@ -28,8 +33,7 @@ void readDir(int fd) {
   for (;;) {
     nread = syscall(SYS_getdents, fd, buf, BUF_SIZE);
     if (nread == 0) {
-      fputc(']', fp);
-      fputc('}', fp);
+      fprintf(fp, "]}");
       break;
     }
     for (bpos = 0; bpos < nread;) {
@@ -40,12 +44,7 @@ void readDir(int fd) {
           int nfd = openat(fd, d->d_name, O_RDONLY | O_DIRECTORY);
           if (dc || fc)
             fputc(',', fp);
-          fputc('{', fp);
-          fputc('"', fp);
-          fputs(d->d_name, fp);
-          fputc('"', fp);
-          fputc(':', fp);
-          fputc('[', fp);
+          fprintf(fp, "{\"%s\":[", d->d_name);
           readDir(nfd);
           dc++;
           close(nfd);
@@ -53,9 +52,12 @@ void readDir(int fd) {
       } else {
         if (fc)
           fputc(',', fp);
-        fputc('"', fp);
-        fputs(d->d_name, fp);
-        fputc('"', fp);
+        printf("%s:", d->d_name);
+        printf("%d\n", fstatat(fd, d->d_name, &s, AT_SYMLINK_NOFOLLOW));
+        fprintf(fp, "{\"name\":\"%s\"", d->d_name);
+        fprintf(fp, ",\"size\":\"%ld\"", s.st_size);
+        fprintf(fp, ",\"size on disk\":\"%ld\"", s.st_blocks * 512);
+        fprintf(fp, ",\"slag\":\"%ld\"}", s.st_blocks * 512 - s.st_size);
         fc++;
       }
       bpos += d->d_reclen;
@@ -67,13 +69,7 @@ int main(int argc, char const *argv[]) {
   int fd;
   fp = fopen("dir.json", "w+");
   fd = open(".", O_RDONLY | O_DIRECTORY);
-  fputc('{', fp);
-  fputc('"', fp);
-
-  fputs(get_current_dir_name(), fp);
-  fputc('"', fp);
-  fputc(':', fp);
-  fputc('[', fp);
+  fprintf(fp, "{\"%s\":[", get_current_dir_name());
   readDir(fd);
   close(fd);
   fflush(fp);
