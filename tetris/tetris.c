@@ -5,6 +5,18 @@
 #include <termios.h>
 #include <unistd.h>
 
+enum { f_i, f_o, f_t, f_s, f_z, f_j, f_l };
+
+typedef struct figure {
+  int a : 16;
+  int p : 2;
+  void *print;
+  void *rotate;
+  int *width;
+  int *height;
+  int *mayFall;
+} figure_t;
+
 int main(int argc, char const *argv[]) {
   struct termios t;
   char c;
