@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +7,7 @@
 #include <sys/types.h>
 #include <termios.h>
 #include <unistd.h>
+
 #define c_width 12
 #define c_heigth 21
 
@@ -91,11 +94,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 4;
     f.st.y = 0;
     f.nd.x = 5;
-    f.nd.x = 0;
+    f.nd.y = 0;
     f.rd.x = 6;
-    f.rd.x = 0;
+    f.rd.y = 0;
     f.th.x = 7;
-    f.th.x = 0;
+    f.th.y = 0;
     break;
   case f_o:
     f.print = &f_o_print;
@@ -105,11 +108,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 5;
     f.st.y = 0;
     f.nd.x = 6;
-    f.nd.x = 0;
+    f.nd.y = 0;
     f.rd.x = 6;
-    f.rd.x = 1;
+    f.rd.y = 1;
     f.th.x = 5;
-    f.th.x = 1;
+    f.th.y = 1;
     break;
   case f_t:
     f.print = &f_t_print;
@@ -119,11 +122,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 5;
     f.st.y = 0;
     f.nd.x = 4;
-    f.nd.x = 1;
+    f.nd.y = 1;
     f.rd.x = 5;
-    f.rd.x = 1;
+    f.rd.y = 1;
     f.th.x = 6;
-    f.th.x = 1;
+    f.th.y = 1;
     break;
   case f_s:
     f.print = &f_s_print;
@@ -133,11 +136,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 4;
     f.st.y = 1;
     f.nd.x = 5;
-    f.nd.x = 1;
+    f.nd.y = 1;
     f.rd.x = 5;
-    f.rd.x = 0;
+    f.rd.y = 0;
     f.th.x = 6;
-    f.th.x = 0;
+    f.th.y = 0;
     break;
   case f_z:
     f.print = &f_z_print;
@@ -147,11 +150,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 4;
     f.st.y = 0;
     f.nd.x = 5;
-    f.nd.x = 0;
+    f.nd.y = 0;
     f.rd.x = 5;
-    f.rd.x = 1;
+    f.rd.y = 1;
     f.th.x = 6;
-    f.th.x = 1;
+    f.th.y = 1;
     break;
   case f_j:
     f.print = &f_j_print;
@@ -161,11 +164,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 4;
     f.st.y = 0;
     f.nd.x = 4;
-    f.nd.x = 1;
+    f.nd.y = 1;
     f.rd.x = 5;
-    f.rd.x = 1;
+    f.rd.y = 1;
     f.th.x = 6;
-    f.th.x = 1;
+    f.th.y = 1;
     break;
   case f_l:
     f.print = &f_l_print;
@@ -175,11 +178,11 @@ void spawnFigure(figure_t *g) {
     f.st.x = 4;
     f.st.y = 1;
     f.nd.x = 5;
-    f.nd.x = 1;
+    f.nd.y = 1;
     f.rd.x = 6;
-    f.rd.x = 1;
+    f.rd.y = 1;
     f.th.x = 6;
-    f.th.x = 0;
+    f.th.y = 0;
     break;
   }
   *g = f;
@@ -205,7 +208,7 @@ void printCup() {
       if (cup.f[x][y] == 1)
         write(1, "\u25AF", 3);
       else if (cup.f[x][y] == 2) {
-        write(1, "*", 1);
+        write(1, "\u25A3", 3);
       } else
         write(1, ".", 1);
     }
@@ -231,7 +234,7 @@ int main(int argc, char const *argv[]) {
   // FD_SET(0, &f);
   initCup();
   spawnFigure(&fig);
-  // fig.print(fig);
+  fig.print(fig);
   printCup();
   // fcntl(1, O_NONBLOCK);
 
