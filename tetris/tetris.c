@@ -45,6 +45,13 @@ void printCoords(coords c1, coords c2, coords c3, coords c4) {
   cup.f[c4.x][c4.y] = 2;
 }
 
+void printFig(figure_t f) {
+  cup.f[f.st.x][f.st.y] = 2;
+  cup.f[f.nd.x][f.nd.y] = 2;
+  cup.f[f.rd.x][f.rd.y] = 2;
+  cup.f[f.th.x][f.th.y] = 2;
+}
+
 void f_i_print(figure_t f) { printCoords(f.st, f.nd, f.rd, f.th); }
 void f_i_rotate_cw(figure_t f) {}
 void f_i_rotate_ccw(figure_t f) {}
@@ -87,7 +94,7 @@ void spawnFigure(figure_t *g) {
   f.a = f_i;
   switch (f.a) {
   case f_i:
-    f.print = &f_i_print;
+    f.print = &printFig;
     f.rotate_cw = &f_i_rotate_cw;
     f.rotate_ccw = &f_i_rotate_ccw;
     f.mayFall = &f_i_mayFall;
@@ -101,7 +108,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 0;
     break;
   case f_o:
-    f.print = &f_o_print;
+    f.print = &printFig;
     f.rotate_cw = &f_o_rotate_cw;
     f.rotate_ccw = &f_o_rotate_ccw;
     f.mayFall = &f_o_mayFall;
@@ -115,7 +122,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 1;
     break;
   case f_t:
-    f.print = &f_t_print;
+    f.print = &printFig;
     f.rotate_cw = &f_t_rotate_cw;
     f.rotate_ccw = &f_t_rotate_ccw;
     f.mayFall = &f_t_mayFall;
@@ -129,7 +136,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 1;
     break;
   case f_s:
-    f.print = &f_s_print;
+    f.print = &printFig;
     f.rotate_cw = &f_s_rotate_cw;
     f.rotate_ccw = &f_s_rotate_ccw;
     f.mayFall = &f_s_mayFall;
@@ -143,7 +150,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 0;
     break;
   case f_z:
-    f.print = &f_z_print;
+    f.print = &printFig;
     f.rotate_cw = &f_z_rotate_cw;
     f.rotate_ccw = &f_z_rotate_ccw;
     f.mayFall = &f_z_mayFall;
@@ -157,7 +164,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 1;
     break;
   case f_j:
-    f.print = &f_j_print;
+    f.print = &printFig;
     f.rotate_cw = &f_j_rotate_cw;
     f.rotate_ccw = &f_j_rotate_ccw;
     f.mayFall = &f_j_mayFall;
@@ -171,7 +178,7 @@ void spawnFigure(figure_t *g) {
     f.th.y = 1;
     break;
   case f_l:
-    f.print = &f_l_print;
+    f.print = &printFig;
     f.rotate_cw = &f_l_rotate_cw;
     f.rotate_ccw = &f_l_rotate_ccw;
     f.mayFall = &f_l_mayFall;
@@ -216,13 +223,35 @@ void printCup() {
   }
 };
 
+void step(figure_t *g, coords d) {
+  figure_t f = *g;
+  cup.f[f.st.x][f.st.y] = 0;
+  cup.f[f.nd.x][f.nd.y] = 0;
+  cup.f[f.rd.x][f.rd.y] = 0;
+  cup.f[f.th.x][f.th.y] = 0;
+  if (f.mayFall(f)) {
+
+    f.st.x += d.x;
+    f.st.y += (d.y + 1);
+    f.nd.x += d.x;
+    f.nd.y += (d.y + 1);
+    f.rd.x += d.x;
+    f.rd.y += (d.y + 1);
+    f.th.x += d.x;
+    f.th.y += (d.y + 1);
+    f.print(f);
+  }
+  *g = f;
+}
+
 int main(int argc, char const *argv[]) {
   struct termios t;
   char c;
 
   char block[] = {0xE2, 0x96, 0xA3};
   char *s;
-  fd_set f;
+  coords d;
+
   figure_t fig;
   tcgetattr(0, &t);
   t.c_lflag &= ~ICANON;
@@ -238,16 +267,39 @@ int main(int argc, char const *argv[]) {
   printCup();
   // fcntl(1, O_NONBLOCK);
 
-  /*while (1) {
-    usleep(100000);
+  while (1) {
+    usleep(1000000);
+    d.x = 0;
+    d.y = 0;
     if (read(0, &c, 1) != -1) {
-
-      // write(1, &c, 1);
+      step(&fig, d);
     } else {
+      switch (c) {
+      case 'q':
+        break;
+      case 'e':
+        break;
+      case 'a':
+        d.x = -1;
+        d.y = 0;
+        break;
+      case 's':
+        d.x = 0;
+        d.y = 1;
+        break;
+      case 'd':
+        d.x = 1;
+        d.y = 0;
+        break;
+      }
+      step(&fig, d);
       s = "\033[38;5;206m\u25A3 ";
       // write(1, s, 14);
       printCup();
     }
-  }*/
+  }
+  t.c_lflag &= ICANON;
+  t.c_lflag &= (ECHO | ECHOE | ECHOK | ECHONL);
+  tcsetattr(0, TCSANOW, &t);
   return 0;
 }
