@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-10-23T15:25:16.395Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="f0Ie2oVWJAOWYVkksHBu" version="13.8.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-10-23T15:39:17.618Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="aM0-PYqSR8R4VhnyxFh_" version="13.8.1" type="github">
   <diagram id="aYMY1mHZ9k2ShKbmNArZ" name="Page-1">
-    <mxGraphModel dx="3555" dy="1763" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="4000" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="705" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="4000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -627,7 +627,7 @@
           <mxGeometry x="1165" y="2430" width="180" height="640" as="geometry" />
         </mxCell>
         <mxCell id="_YruUomcuVvGeMSo5EBF-128" value="SWITCHES" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1400" y="1840" width="160" height="40" as="geometry" />
+          <mxGeometry x="1520" y="1850" width="160" height="40" as="geometry" />
         </mxCell>
         <mxCell id="_YruUomcuVvGeMSo5EBF-141" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="_YruUomcuVvGeMSo5EBF-130" target="_YruUomcuVvGeMSo5EBF-133">
           <mxGeometry relative="1" as="geometry" />
@@ -680,6 +680,18 @@
         </mxCell>
         <mxCell id="_YruUomcuVvGeMSo5EBF-140" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.x;labelBorderColor=none;labelBackgroundColor=none;strokeColor=#b85450;fillColor=#CC0000;" vertex="1" parent="1">
           <mxGeometry x="1025" y="1460" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_YruUomcuVvGeMSo5EBF-143" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1600" y="1895" as="sourcePoint" />
+            <mxPoint x="1600" y="1935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_YruUomcuVvGeMSo5EBF-144" value="ZOOM IN" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1625" y="1905" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="_YruUomcuVvGeMSo5EBF-145" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1520" y="1945" width="160" height="45" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
